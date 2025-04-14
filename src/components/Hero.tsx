@@ -151,10 +151,12 @@ const Hero = () => {
           <a href="https://github.com/steja2805" target="_blank" rel="noopener noreferrer">
             <Button 
               variant="outline" 
-              className="group flex items-center gap-2 border-gray-700 hover:bg-gray-800/50 hover:border-gray-600 transition-colors"
+              className="group relative flex items-center gap-2 border-gray-700 hover:bg-gray-800/50 hover:border-gray-600 transition-colors"
             >
               <Github size={18} />
               <span>GitHub</span>
+              <span className="absolute -inset-1 bg-devops-highlight/20 rounded-md opacity-0 group-hover:opacity-100 transition-opacity animate-ping duration-1000 ease-in-out"></span>
+              <span className="absolute inset-0 border-2 border-devops-highlight rounded-md opacity-0 group-hover:opacity-100 transition-opacity"></span>
             </Button>
           </a>
           
