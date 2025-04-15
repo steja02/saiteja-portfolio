@@ -151,7 +151,7 @@ const Hero = () => {
             <a href="https://github.com/steja2805" target="_blank" rel="noopener noreferrer" className="block w-full">
               <Button 
                 variant="outline" 
-                className="w-full border-devops-highlight/50 hover:bg-devops-highlight/20 hover:border-devops-highlight/90 transition-colors"
+                className="w-full border-gray-700 hover:bg-gray-800/50 hover:border-gray-600 transition-colors"
               >
                 <Github size={18} className="mr-2" />
                 <span>GitHub</span>
@@ -163,7 +163,7 @@ const Hero = () => {
             <a href="https://www.linkedin.com/in/steja8494" target="_blank" rel="noopener noreferrer" className="block w-full">
               <Button 
                 variant="outline" 
-                className="w-full border-devops-highlight/50 hover:bg-devops-highlight/20 hover:border-devops-highlight/90 transition-colors"
+                className="w-full border-gray-700 hover:bg-gray-800/50 hover:border-gray-600 transition-colors"
               >
                 <Linkedin size={18} className="mr-2" />
                 <span>LinkedIn</span>
