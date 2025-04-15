@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from "react";
 import { Github, Linkedin, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -169,7 +170,7 @@ const Hero = () => {
               </Button>
             </a>
           </div>
-
+        </div>
         
         <div className="absolute bottom-[-60px] left-1/2 -translate-x-1/2 animate-bounce">
           <a href="#about" className="block group">
