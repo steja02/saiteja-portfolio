@@ -136,48 +136,54 @@ const Hero = () => {
           </p>
         </div>
         
-        <div className="flex flex-wrap justify-center gap-6 mb-12">
-          {/* Fixed button styling to ensure hover effects are properly contained */}
-          <Button 
-            variant="outline" 
-            className="border-devops-highlight/50 hover:bg-devops-highlight/20 hover:border-devops-highlight/90 transition-colors"
-          >
-            <FileText size={18} className="mr-2" />
-            <span>View Resume</span>
-          </Button>
-          
-          <a href="https://github.com/steja2805" target="_blank" rel="noopener noreferrer" className="block">
+        {/* Completely rebuilt button container with proper spacing and isolated hover areas */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12 w-full max-w-3xl">
+          <div className="w-full">
             <Button 
               variant="outline" 
-              className="border-gray-700 hover:bg-gray-800/50 hover:border-gray-600 transition-colors"
+              className="w-full border-devops-highlight/50 hover:bg-devops-highlight/20 hover:border-devops-highlight/90 transition-colors"
             >
-              <Github size={18} className="mr-2" />
-              <span>GitHub</span>
+              <FileText size={18} className="mr-2" />
+              <span>View Resume</span>
             </Button>
-          </a>
+          </div>
           
-          <a href="https://www.linkedin.com/in/steja8494" target="_blank" rel="noopener noreferrer" className="block">
-            <Button 
-              variant="outline" 
-              className="border-gray-700 hover:bg-gray-800/50 hover:border-gray-600 transition-colors"
-            >
-              <Linkedin size={18} className="mr-2" />
-              <span>LinkedIn</span>
-            </Button>
-          </a>
+          <div className="w-full">
+            <a href="https://github.com/steja2805" target="_blank" rel="noopener noreferrer" className="block w-full">
+              <Button 
+                variant="outline" 
+                className="w-full border-gray-700 hover:bg-gray-800/50 hover:border-gray-600 transition-colors"
+              >
+                <Github size={18} className="mr-2" />
+                <span>GitHub</span>
+              </Button>
+            </a>
+          </div>
+          
+          <div className="w-full">
+            <a href="https://www.linkedin.com/in/steja8494" target="_blank" rel="noopener noreferrer" className="block w-full">
+              <Button 
+                variant="outline" 
+                className="w-full border-gray-700 hover:bg-gray-800/50 hover:border-gray-600 transition-colors"
+              >
+                <Linkedin size={18} className="mr-2" />
+                <span>LinkedIn</span>
+              </Button>
+            </a>
+          </div>
         </div>
         
-        {/* Add smooth scroll transition with animated chevron */}
+        {/* Improved scroll indicator */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-          <a href="#about" className="block">
-            <div className="w-8 h-8 border-2 border-devops-highlight rounded-full flex items-center justify-center">
+          <a href="#about" className="block group">
+            <div className="w-10 h-10 border-2 border-devops-highlight rounded-full flex items-center justify-center transition-all duration-300 group-hover:border-opacity-100 group-hover:animate-glow">
               <div className="w-1 h-3 bg-devops-highlight rounded-full"></div>
             </div>
           </a>
         </div>
       </div>
 
-      {/* Add subtle wave divider for smoother section transition */}
+      {/* Wave divider for section transition */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden z-20">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-16 md:h-24">
           <path 
