@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { Github, Linkedin, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -136,7 +135,6 @@ const Hero = () => {
           </p>
         </div>
         
-        {/* Completely rebuilt button container with proper spacing and isolated hover areas */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12 w-full max-w-3xl">
           <div className="w-full">
             <Button 
@@ -173,8 +171,7 @@ const Hero = () => {
           </div>
         </div>
         
-        {/* Improved scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce">
           <a href="#about" className="block group">
             <div className="w-10 h-10 border-2 border-devops-highlight rounded-full flex items-center justify-center transition-all duration-300 group-hover:border-opacity-100 group-hover:animate-glow">
               <div className="w-1 h-3 bg-devops-highlight rounded-full"></div>
@@ -183,7 +180,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Wave divider for section transition */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden z-20">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-16 md:h-24">
           <path 
