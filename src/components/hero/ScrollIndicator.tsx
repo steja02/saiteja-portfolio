@@ -8,7 +8,7 @@ const ScrollIndicator: React.FC = () => {
   const isMobile = useIsMobile();
   
   return (
-    <div className={`absolute ${isMobile ? 'bottom-[-60px]' : 'bottom-[-120px]'} left-1/2 -translate-x-1/2 animate-bounce`}>
+    <div className={`absolute ${isMobile ? 'bottom-[-70px]' : 'bottom-[-110px]'} left-1/2 -translate-x-1/2 animate-bounce`}>
       <a 
         href="#about" 
         className="block group"
