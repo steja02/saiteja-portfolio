@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
@@ -35,7 +36,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scroll ? "bg-devops-darker bg-opacity-90 shadow-lg backdrop-blur-sm" : "bg-transparent"}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scroll ? "bg-white/90 dark:bg-devops-darker/90 shadow-lg backdrop-blur-sm" : "bg-transparent"}`}>
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="text-devops-highlight font-bold text-xl hover:text-opacity-80 transition-all cursor-pointer" onClick={scrollToTop}>
             BST
@@ -45,13 +46,15 @@ const Navbar = () => {
               <button 
                 key={item}
                 onClick={() => scrollToSection(item)} 
-                className="text-gray-300 hover:text-devops-highlight transition-colors capitalize"
+                className="text-gray-700 dark:text-gray-300 hover:text-devops-highlight dark:hover:text-devops-highlight transition-colors capitalize"
               >
                 {item}
               </button>
             ))}
+            <ThemeToggle />
           </nav>
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-4">
+            <ThemeToggle />
             <Button 
               variant="ghost" 
               className="text-devops-highlight hover:bg-devops-accent1/10"
@@ -63,7 +66,7 @@ const Navbar = () => {
         </div>
         
         {/* Mobile menu */}
-        <div id="mobile-menu" className="md:hidden hidden bg-devops-darker bg-opacity-95 py-4 backdrop-blur-sm">
+        <div id="mobile-menu" className="md:hidden hidden bg-white/95 dark:bg-devops-darker/95 py-4 backdrop-blur-sm">
           <div className="container mx-auto px-4 flex flex-col space-y-4">
             {["about", "skills", "experience", "projects", "contact"].map((item) => (
               <button 
@@ -72,7 +75,7 @@ const Navbar = () => {
                   scrollToSection(item);
                   document.getElementById('mobile-menu')?.classList.add('hidden');
                 }} 
-                className="text-gray-300 hover:text-devops-highlight transition-colors py-2 capitalize text-left"
+                className="text-gray-700 dark:text-gray-300 hover:text-devops-highlight dark:hover:text-devops-highlight transition-colors py-2 capitalize text-left"
               >
                 {item}
               </button>

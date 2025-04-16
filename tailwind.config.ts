@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -65,6 +66,8 @@ export default {
                 devops: {
                     dark: '#121212',
                     darker: '#0A0A0A',
+                    light: '#f0f4f8',
+                    lighter: '#ffffff',
                     highlight: '#00e5ff',
                     accent1: '#6e59a5',
                     accent2: '#1eaedb',

@@ -6,6 +6,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { 
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage 
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  message: z.string().min(10, "Message must be at least 10 characters")
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const ContactInfo = ({
   icon: Icon,
@@ -19,126 +38,178 @@ const ContactInfo = ({
   href?: string;
 }) => {
   return (
-    <div className="flex items-start gap-4 p-4 bg-devops-darker/60 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-devops-highlight/30 transition-all hover:bg-devops-darker/80">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.3 }}
+      className="flex items-start gap-4 p-4 rounded-lg border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-devops-darker/60 backdrop-blur-sm hover:border-devops-highlight/50 dark:hover:border-devops-highlight/30 transition-all hover:shadow-md dark:hover:bg-devops-darker/80"
+    >
       <div className="w-10 h-10 rounded-full bg-devops-highlight/10 flex items-center justify-center text-devops-highlight">
         <Icon size={20} />
       </div>
       <div>
-        <h3 className="text-sm text-gray-400">{title}</h3>
+        <h3 className="text-sm text-gray-500 dark:text-gray-400">{title}</h3>
         {href ? (
-          <a href={href} className="text-gray-200 hover:text-devops-highlight transition-colors">
+          <a href={href} className="text-gray-800 dark:text-gray-200 hover:text-devops-highlight transition-colors">
             {value}
           </a>
         ) : (
-          <p className="text-gray-200">{value}</p>
+          <p className="text-gray-800 dark:text-gray-200">{value}</p>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const Contact = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      message: ""
+    }
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "Message sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
-        variant: "default",
+    try {
+      // Email sending functionality
+      const response = await fetch("https://formsubmit.co/ajax/steja8494@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          message: data.message,
+          _subject: `Portfolio Contact: Message from ${data.name}`
+        })
       });
       
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
+      if (response.ok) {
+        toast({
+          title: "Message sent!",
+          description: "Thank you for reaching out. I'll get back to you soon.",
+          variant: "default",
+        });
+        form.reset();
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Your message could not be sent. Please try again later.",
+        variant: "destructive",
       });
-    }, 1500);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-b from-devops-darker to-devops-dark">
+    <section id="contact" className="py-20 bg-gradient-to-b from-gray-50 via-gray-100 to-white dark:from-devops-darker dark:to-devops-dark">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center">
-          <span className="inline-block relative">
-            <Mail className="inline-block mr-2 text-devops-highlight" size={32} />
-            <span>Get In Touch</span>
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-devops-highlight to-transparent"></span>
-          </span>
-        </h2>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center text-gray-800 dark:text-white">
+            <span className="inline-block relative">
+              <Mail className="inline-block mr-2 text-devops-highlight" size={32} />
+              <span>Get In Touch</span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-devops-highlight to-transparent"></span>
+            </span>
+          </h2>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
+            Have a project in mind or want to collaborate? Feel free to reach out. I'm always open to new opportunities and challenges.
+          </p>
+        </motion.div>
 
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Contact Form */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <div className="bg-devops-darker/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-800">
-                <h3 className="text-xl font-semibold mb-6">Send Me A Message</h3>
+              <div className="bg-white/80 dark:bg-devops-darker/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-200 dark:border-gray-800 shadow-lg">
+                <h3 className="text-xl font-semibold mb-6 text-gray-800 dark:text-white">Send Me A Message</h3>
                 
-                <form onSubmit={handleSubmit}>
-                  <div className="space-y-4">
-                    <div>
-                      <Input
-                        placeholder="Your Name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="bg-black/30 border-gray-700 focus:border-devops-highlight"
-                      />
-                    </div>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Your Name"
+                              className="bg-white dark:bg-black/30 border-gray-300 dark:border-gray-700 focus:border-devops-highlight"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     
-                    <div>
-                      <Input
-                        type="email"
-                        placeholder="Your Email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="bg-black/30 border-gray-700 focus:border-devops-highlight"
-                      />
-                    </div>
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="email"
+                              placeholder="Your Email"
+                              className="bg-white dark:bg-black/30 border-gray-300 dark:border-gray-700 focus:border-devops-highlight"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     
-                    <div>
-                      <Textarea
-                        placeholder="Your Message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                        className="min-h-[150px] bg-black/30 border-gray-700 focus:border-devops-highlight"
-                      />
-                    </div>
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 dark:text-gray-300">Message</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Your Message"
+                              className="min-h-[150px] bg-white dark:bg-black/30 border-gray-300 dark:border-gray-700 focus:border-devops-highlight"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     
-                    <div>
+                    <div className="pt-2">
                       <Button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="w-full bg-devops-highlight hover:bg-devops-highlight/80 text-black font-medium"
+                        className="w-full bg-devops-highlight hover:bg-devops-highlight/80 text-black font-medium transition-all transform hover:scale-[1.02] active:scale-[0.98]"
                       >
                         {isSubmitting ? (
                           <span className="flex items-center gap-2">
@@ -153,22 +224,22 @@ const Contact = () => {
                         )}
                       </Button>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </Form>
               </div>
             </motion.div>
             
             {/* Contact Info */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <div className="space-y-4">
-                <div className="bg-devops-darker/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-800 mb-6">
-                  <h3 className="text-xl font-semibold mb-6">Contact Information</h3>
-                  <p className="text-gray-400 mb-8">Feel free to reach out for opportunities, collaborations, or just to say hello!</p>
+              <div className="space-y-6">
+                <div className="bg-white/80 dark:bg-devops-darker/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-200 dark:border-gray-800 mb-6 shadow-lg">
+                  <h3 className="text-xl font-semibold mb-6 text-gray-800 dark:text-white">Contact Information</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-8">Feel free to reach out for opportunities, collaborations, or just to say hello!</p>
                   
                   <div className="space-y-4">
                     <ContactInfo
@@ -193,35 +264,22 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div className="bg-devops-darker/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-800">
-                  <h3 className="text-xl font-semibold mb-4">Connect With Me</h3>
+                <div className="bg-white/80 dark:bg-devops-darker/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-200 dark:border-gray-800 shadow-lg">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Connect With Me</h3>
                   <div className="flex gap-4">
                     <a 
                       href="https://github.com/steja2805" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-gray-800 hover:bg-devops-highlight/20 flex items-center justify-center text-gray-300 hover:text-devops-highlight transition-colors border border-gray-700 hover:border-devops-highlight"
+                      className="w-10 h-10 rounded-full bg-gray-100 hover:bg-devops-highlight/20 dark:bg-gray-800 dark:hover:bg-devops-highlight/20 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-devops-highlight dark:hover:text-devops-highlight transition-colors border border-gray-300 dark:border-gray-700 hover:border-devops-highlight dark:hover:border-devops-highlight"
                     >
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        width="20" 
-                        height="20" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round"
-                      >
-                        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
-                        <path d="M9 18c-4.51 2-5-2-7-2"></path>
-                      </svg>
+                      <Github size={20} />
                     </a>
                     <a 
                       href="https://www.linkedin.com/in/steja8494" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-gray-800 hover:bg-devops-highlight/20 flex items-center justify-center text-gray-300 hover:text-devops-highlight transition-colors border border-gray-700 hover:border-devops-highlight"
+                      className="w-10 h-10 rounded-full bg-gray-100 hover:bg-devops-highlight/20 dark:bg-gray-800 dark:hover:bg-devops-highlight/20 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-devops-highlight dark:hover:text-devops-highlight transition-colors border border-gray-300 dark:border-gray-700 hover:border-devops-highlight dark:hover:border-devops-highlight"
                     >
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
