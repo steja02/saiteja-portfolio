@@ -100,15 +100,63 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #0A0A0A;
+    @apply bg-gray-100 dark:bg-devops-darker transition-colors duration-300;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 4px;
+    @apply bg-gray-300 dark:bg-gray-700 rounded-full transition-colors duration-300;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 229, 255, 0.5);
+    @apply bg-devops-accent1/50 dark:bg-devops-highlight/50 transition-colors duration-300;
+  }
+}
+
+@layer utilities {
+  /* Theme transition utilities */
+  .theme-transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  /* Interactive element hover effects */
+  .interactive-hover {
+    @apply transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-md;
+  }
+  
+  /* Button hover effects */
+  .button-hover {
+    @apply transform transition duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg active:scale-[0.98];
+  }
+  
+  /* Link hover effects */
+  .link-hover {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-current after:transition-all after:duration-300;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpFade {
+  from { 
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
   }
 }

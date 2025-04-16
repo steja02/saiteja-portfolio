@@ -7,10 +7,13 @@ import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import { useTheme } from "@/components/ThemeProvider";
 
 const Index = () => {
+  const { theme } = useTheme();
+  
   return (
-    <div className="min-h-screen bg-white text-gray-800 dark:bg-devops-dark dark:text-white">
+    <div className="min-h-screen bg-white dark:bg-devops-dark text-gray-800 dark:text-white transition-colors duration-300">
       <Navbar />
       <Hero />
       <About />
