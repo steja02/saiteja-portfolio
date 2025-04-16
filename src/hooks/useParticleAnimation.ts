@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from "react";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface Particle {
   x: number;
@@ -14,6 +15,7 @@ interface Particle {
 
 const useParticleAnimation = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -39,7 +41,8 @@ const useParticleAnimation = () => {
         this.size = Math.random() * 3 + 1;
         this.speedX = Math.random() * 1 - 0.5;
         this.speedY = Math.random() * 1 - 0.5;
-        this.color = "#00e5ff";
+        // Adjust particle color based on theme
+        this.color = theme === "light" ? "#6e59a5" : "#00e5ff";
       }
 
       update() {
@@ -80,8 +83,13 @@ const useParticleAnimation = () => {
           
           if (distance < 100) {
             const opacity = 1 - distance / 100;
+            // Adjust line color based on theme
+            const lineColor = theme === "light" 
+              ? `rgba(110, 89, 165, ${opacity * 0.2})` 
+              : `rgba(0, 229, 255, ${opacity * 0.2})`;
+              
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 229, 255, ${opacity * 0.2})`;
+            ctx.strokeStyle = lineColor;
             ctx.lineWidth = 1;
             ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
             ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
@@ -120,7 +128,7 @@ const useParticleAnimation = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [theme]); // Add theme as a dependency to recreate particles when theme changes
 
   return canvasRef;
 };

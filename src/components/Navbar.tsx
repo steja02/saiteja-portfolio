@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useTheme } from "@/components/ThemeProvider";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const { theme } = useTheme();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -36,9 +38,19 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scroll ? "bg-white/90 dark:bg-devops-darker/90 shadow-lg backdrop-blur-sm" : "bg-transparent"}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scroll 
+          ? theme === "light" 
+            ? "bg-white/90 shadow-lg backdrop-blur-sm" 
+            : "bg-devops-darker/90 shadow-lg backdrop-blur-sm" 
+          : "bg-transparent"
+      }`}>
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-devops-highlight font-bold text-xl hover:text-opacity-80 transition-all cursor-pointer" onClick={scrollToTop}>
+          <div className={`font-bold text-xl hover:opacity-80 transition-all cursor-pointer ${
+            theme === "light" 
+              ? "text-devops-accent1" 
+              : "text-devops-highlight"
+          }`} onClick={scrollToTop}>
             BST
           </div>
           <nav className="hidden md:flex items-center space-x-6">
@@ -46,7 +58,11 @@ const Navbar = () => {
               <button 
                 key={item}
                 onClick={() => scrollToSection(item)} 
-                className="text-gray-700 dark:text-gray-300 hover:text-devops-highlight dark:hover:text-devops-highlight transition-colors capitalize"
+                className={`transition-colors capitalize hover:scale-105 ${
+                  theme === "light" 
+                    ? "text-gray-800 hover:text-devops-accent1" 
+                    : "text-gray-300 hover:text-devops-highlight"
+                }`}
               >
                 {item}
               </button>
@@ -57,7 +73,11 @@ const Navbar = () => {
             <ThemeToggle />
             <Button 
               variant="ghost" 
-              className="text-devops-highlight hover:bg-devops-accent1/10"
+              className={`${
+                theme === "light" 
+                  ? "text-devops-accent1 hover:bg-devops-accent1/10" 
+                  : "text-devops-highlight hover:bg-devops-highlight/10"
+              }`}
               onClick={() => document.getElementById('mobile-menu')?.classList.toggle('hidden')}
             >
               Menu
@@ -66,7 +86,11 @@ const Navbar = () => {
         </div>
         
         {/* Mobile menu */}
-        <div id="mobile-menu" className="md:hidden hidden bg-white/95 dark:bg-devops-darker/95 py-4 backdrop-blur-sm">
+        <div id="mobile-menu" className={`md:hidden hidden ${
+          theme === "light" 
+            ? "bg-white/95" 
+            : "bg-devops-darker/95"
+        } py-4 backdrop-blur-sm transition-colors duration-300`}>
           <div className="container mx-auto px-4 flex flex-col space-y-4">
             {["about", "skills", "experience", "projects", "contact"].map((item) => (
               <button 
@@ -75,7 +99,11 @@ const Navbar = () => {
                   scrollToSection(item);
                   document.getElementById('mobile-menu')?.classList.add('hidden');
                 }} 
-                className="text-gray-700 dark:text-gray-300 hover:text-devops-highlight dark:hover:text-devops-highlight transition-colors py-2 capitalize text-left"
+                className={`py-2 capitalize text-left transition-colors ${
+                  theme === "light" 
+                    ? "text-gray-800 hover:text-devops-accent1" 
+                    : "text-gray-300 hover:text-devops-highlight"
+                }`}
               >
                 {item}
               </button>
@@ -84,7 +112,11 @@ const Navbar = () => {
         </div>
         
         <div 
-          className="h-1 bg-devops-highlight" 
+          className={`h-1 ${
+            theme === "light" 
+              ? "bg-devops-accent1" 
+              : "bg-devops-highlight"
+          }`}
           style={{ width: `${scrollProgress}%`, transition: "width 0.2s ease-out" }}
         ></div>
       </header>
@@ -92,9 +124,15 @@ const Navbar = () => {
       {/* Back to top button */}
       <button 
         onClick={scrollToTop}
-        className={`fixed bottom-6 right-6 z-50 rounded-full bg-devops-accent1 p-3 shadow-lg transition-all duration-300 hover:bg-devops-highlight ${scroll ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}`}
+        className={`fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg transition-all duration-300 ${
+          theme === "light" 
+            ? "bg-devops-accent1 hover:bg-devops-accent2" 
+            : "bg-devops-accent1 hover:bg-devops-highlight"
+        } ${
+          scroll ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+        }`}
       >
-        <ArrowUp size={24} />
+        <ArrowUp size={24} className="text-white" />
       </button>
     </>
   );

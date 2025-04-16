@@ -5,14 +5,20 @@ import HeroHeader from "@/components/hero/HeroHeader";
 import HeroButtons from "@/components/hero/HeroButtons";
 import ScrollIndicator from "@/components/hero/ScrollIndicator";
 import WaveDivider from "@/components/hero/WaveDivider";
+import { useTheme } from "@/components/ThemeProvider";
 
 const Hero: React.FC = () => {
+  const { theme } = useTheme();
   const canvasRef = useParticleAnimation();
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4">
       <canvas ref={canvasRef} className="absolute inset-0 z-0"></canvas>
-      <div className="absolute inset-0 bg-gradient-to-b from-devops-dark/70 to-devops-darker z-10"></div>
+      <div className={`absolute inset-0 ${
+        theme === "light" 
+          ? "bg-gradient-to-b from-gray-200/70 to-gray-50" 
+          : "bg-gradient-to-b from-devops-dark/70 to-devops-darker"
+        } z-10 transition-colors duration-500`}></div>
       
       <div className="container mx-auto relative z-20 text-center flex flex-col items-center animate-fade-in">
         <HeroHeader 
