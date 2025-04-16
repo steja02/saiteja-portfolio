@@ -6,7 +6,7 @@ const ScrollIndicator: React.FC = () => {
   const { theme } = useTheme();
   
   return (
-    <div className="absolute bottom-[-50px] left-1/2 -translate-x-1/2 animate-bounce">
+    <div className="absolute bottom-[-120px] left-1/2 -translate-x-1/2 animate-bounce">
       <a href="#about" className="block group">
         <div className={`w-10 h-10 border-2 ${theme === "light" 
           ? "border-devops-accent1 shadow-md" 
