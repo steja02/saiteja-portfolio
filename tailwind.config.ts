@@ -69,7 +69,7 @@ export default {
                     light: '#f0f4f8',
                     lighter: '#ffffff',
                     highlight: '#00e5ff',
-                    accent1: '#6e59a5',
+                    accent1: '#000000',
                     accent2: '#1eaedb',
                 }
 			},
