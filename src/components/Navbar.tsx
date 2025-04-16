@@ -1,14 +1,17 @@
 
 import { useState, useEffect } from "react";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useTheme } from "@/components/ThemeProvider";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme } = useTheme();
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +28,13 @@ const Navbar = () => {
     };
   }, []);
 
+  // Close mobile menu when resizing to desktop
+  useEffect(() => {
+    if (!isMobile && mobileMenuOpen) {
+      setMobileMenuOpen(false);
+    }
+  }, [isMobile, mobileMenuOpen]);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -33,7 +43,14 @@ const Navbar = () => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
     }
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
@@ -58,10 +75,10 @@ const Navbar = () => {
               <button 
                 key={item}
                 onClick={() => scrollToSection(item)} 
-                className={`transition-colors capitalize hover:scale-105 ${
+                className={`transition-colors capitalize hover:scale-105 font-medium ${
                   theme === "light" 
                     ? "text-gray-800 hover:text-devops-accent1" 
-                    : "text-gray-300 hover:text-devops-highlight"
+                    : "text-gray-200 hover:text-devops-highlight"
                 }`}
               >
                 {item}
@@ -73,36 +90,37 @@ const Navbar = () => {
             <ThemeToggle />
             <Button 
               variant="ghost" 
+              size="icon"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               className={`${
                 theme === "light" 
                   ? "text-devops-accent1 hover:bg-devops-accent1/10" 
                   : "text-devops-highlight hover:bg-devops-highlight/10"
               }`}
-              onClick={() => document.getElementById('mobile-menu')?.classList.toggle('hidden')}
+              onClick={toggleMobileMenu}
             >
-              Menu
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </Button>
           </div>
         </div>
         
         {/* Mobile menu */}
-        <div id="mobile-menu" className={`md:hidden hidden ${
-          theme === "light" 
-            ? "bg-white/95" 
-            : "bg-devops-darker/95"
-        } py-4 backdrop-blur-sm transition-colors duration-300`}>
+        <div 
+          className={`md:hidden ${mobileMenuOpen ? 'block' : 'hidden'} ${
+            theme === "light" 
+              ? "bg-white/95" 
+              : "bg-devops-darker/95"
+          } py-4 backdrop-blur-sm transition-colors duration-300`}
+        >
           <div className="container mx-auto px-4 flex flex-col space-y-4">
             {["about", "skills", "experience", "projects", "contact"].map((item) => (
               <button 
                 key={item}
-                onClick={() => {
-                  scrollToSection(item);
-                  document.getElementById('mobile-menu')?.classList.add('hidden');
-                }} 
-                className={`py-2 capitalize text-left transition-colors ${
+                onClick={() => scrollToSection(item)}
+                className={`py-3 capitalize text-left transition-colors text-lg font-medium ${
                   theme === "light" 
-                    ? "text-gray-800 hover:text-devops-accent1" 
-                    : "text-gray-300 hover:text-devops-highlight"
+                    ? "text-gray-800 hover:text-devops-accent1 active:bg-gray-100" 
+                    : "text-gray-200 hover:text-devops-highlight active:bg-gray-800/30"
                 }`}
               >
                 {item}
@@ -118,12 +136,14 @@ const Navbar = () => {
               : "bg-devops-highlight"
           }`}
           style={{ width: `${scrollProgress}%`, transition: "width 0.2s ease-out" }}
+          aria-hidden="true"
         ></div>
       </header>
       
       {/* Back to top button */}
       <button 
         onClick={scrollToTop}
+        aria-label="Scroll to top"
         className={`fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg transition-all duration-300 ${
           theme === "light" 
             ? "bg-devops-accent1 hover:bg-devops-accent2" 
