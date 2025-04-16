@@ -13,7 +13,7 @@ const Index = () => {
   const { theme } = useTheme();
   
   return (
-    <div className="min-h-screen bg-white dark:bg-devops-dark text-gray-800 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-devops-darker text-gray-800 dark:text-white transition-colors duration-300">
       <Navbar />
       <Hero />
       <About />

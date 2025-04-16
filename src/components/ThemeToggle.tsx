@@ -33,7 +33,7 @@ export default function ThemeToggle() {
       variant="outline"
       className={`rounded-full w-10 h-10 p-0 transition-all duration-300 
         ${theme === "light" 
-          ? "bg-white border-gray-200 hover:border-devops-highlight hover:bg-gray-50" 
+          ? "bg-white border-gray-200 hover:border-devops-accent1 hover:bg-gray-50 shadow-md" 
           : "bg-devops-darker border-devops-highlight/30 hover:border-devops-highlight hover:bg-devops-highlight/10"
         }`}
       pressed={theme === "dark"}
