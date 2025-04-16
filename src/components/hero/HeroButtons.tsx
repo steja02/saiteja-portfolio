@@ -11,7 +11,7 @@ const HeroButtons: React.FC = () => {
     ? "border-devops-accent1/50 hover:bg-devops-accent1/20 hover:border-devops-accent1/90 active:scale-95 transition-transform duration-200"
     : "border-devops-highlight/50 hover:bg-devops-highlight/20 hover:border-devops-highlight/90 active:scale-95 transition-transform duration-200";
     
-  const iconColor = theme === "light" ? "#080808" : "#00e5ff";
+  const iconColor = theme === "light" ? "#6e59a5" : "#00e5ff";
   
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-12 w-full max-w-3xl px-4">
