@@ -1,5 +1,5 @@
 
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import { useTheme } from "@/components/ThemeProvider";
@@ -24,8 +24,18 @@ const SectionLoading = () => (
 const Index = () => {
   const { theme } = useTheme();
   
+  // Force a reflow on mobile when component mounts to fix potential layout issues
+  useEffect(() => {
+    // Small timeout to ensure DOM is fully rendered
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-devops-darker text-gray-800 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen w-full bg-gray-50 dark:bg-devops-darker text-gray-800 dark:text-white transition-colors duration-300 overflow-x-hidden">
       <Navbar />
       <Hero />
       
